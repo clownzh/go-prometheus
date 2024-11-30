@@ -24,6 +24,11 @@ pipeline {
                 // 登录到阿里云 Docker 注册表
                 withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh """
+                         echo "${DOCKER_PASSWORD}"
+                        """
+                    sh """  echo "${DOCKER_USERNAME}"
+                                                """
+                    sh """
                         echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin registry.cn-hangzhou.aliyuncs.com
                     """
                 }
