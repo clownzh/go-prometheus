@@ -3,8 +3,6 @@ pipeline {
 
     environment {
         // 从 Jenkins 全局变量中读取 Docker 用户名和密码
-        DOCKER_USERNAME = credentials('docker-username')  // 替换为您的 Jenkins 凭据 ID
-        DOCKER_PASSWORD = credentials('docker-password')  // 替换为您的 Jenkins 凭据 ID
         BRANCH_NAME = "${env.BRANCH_NAME}"  // 使用 Jenkins 提供的环境变量来获取分支名称
         IMAGE_NAME = "registry.cn-hangzhou.aliyuncs.com/hisyygh/go-prometheus"
         BUILD_DATE = sh(returnStdout: true, script: 'date +%Y%m%d%H%M%S').trim()
@@ -22,16 +20,9 @@ pipeline {
         stage('Login to Docker Registry') {
             steps {
                 // 登录到阿里云 Docker 注册表
-                withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh """
-                         echo "${DOCKER_PASSWORD}"
-                        """
-                    sh """  echo "${DOCKER_USERNAME}"
-                                                """
-                    sh """
-                        echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin registry.cn-hangzhou.aliyuncs.com
-                    """
-                }
+                 withCredentials([usernamePassword(credentialsId: 'AliRegistry', passwordVariable: 'AliRegistryPassword', usernameVariable: 'AliRegistryUser')]) {
+                        sh "docker login -u ${AliRegistryUser} registry.cn-hangzhou.aliyuncs.com -p ${AliRegistryPassword}"
+                    }
             }
         }
 
