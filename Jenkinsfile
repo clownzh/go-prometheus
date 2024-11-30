@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // 从 GitHub 拉取代码，并切换到指定分支
-                git url: 'https://github.com/clownzh/admin-cli.git', branch: "${BRANCH_NAME}"
+                git url: 'https://github.com/clownzh/go-prometheus.git', branch: "${BRANCH_NAME}"
             }
         }
 
