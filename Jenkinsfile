@@ -17,21 +17,22 @@ pipeline {
             }
         }
 
+          stage('Build Docker Image') {
+                    steps {
+                        // 构建 Docker 镜像，标签为当前年月日时分秒
+                        sh """
+                            docker build -t ${IMAGE_TAG} .
+                        """
+                    }
+                }
+
+
         stage('Login to Docker Registry') {
             steps {
                 // 登录到阿里云 Docker 注册表
                  withCredentials([usernamePassword(credentialsId: 'AliRegistry', passwordVariable: 'AliRegistryPassword', usernameVariable: 'AliRegistryUser')]) {
                         sh "docker login -u ${AliRegistryUser} registry.cn-hangzhou.aliyuncs.com -p ${AliRegistryPassword}"
                     }
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                // 构建 Docker 镜像，标签为当前年月日时分秒
-                sh """
-                    docker build -t ${IMAGE_TAG} .
-                """
             }
         }
 
