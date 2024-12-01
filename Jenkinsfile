@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+     agent {
+            docker {
+                image 'docker:dind'  // 使用 Docker-in-Docker 镜像
+                args '--privileged -u root -v /var/run/docker.sock:/var/run/docker.sock'  // 启用特权模式并挂载 Docker Socket
+            }
+        }
 
     environment {
         // 从 Jenkins 全局变量中读取 Docker 用户名和密码
