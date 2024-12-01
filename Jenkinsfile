@@ -14,7 +14,7 @@ pipeline {
         IMAGE_TAG = "${IMAGE_NAME}:${BUILD_DATE}"
     }
 
-    node("docker") {
+    stages {
         stage('Checkout Code') {
             steps {
                 // 从 GitHub 拉取代码，并切换到指定分支
